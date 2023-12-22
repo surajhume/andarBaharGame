@@ -1,9 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const { Player } = require('../models/player'); // Import your User model
+
+const Player = require('../models/player'); // Import your User model
 
 const login = async (req, res) => {
-router.post('/user', async (req, res) => {
   const { playerEmail, playerPassword } = req.body;
 
   try {
@@ -15,7 +13,7 @@ router.post('/user', async (req, res) => {
     }
 
     // Compare the passwords (plaintext)
-    if (player.password === playerPassword) {
+    if (player.playerPassword === playerPassword) {
       // Passwords match - authentication successful
       return res.status(200).json({ message: 'Login successful', player });
     } else {
@@ -26,7 +24,7 @@ router.post('/user', async (req, res) => {
     console.error('Login error:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
-});
-}
+};
+
 
 module.exports = { login };
