@@ -5,18 +5,15 @@ const sequelize = require("./index")
   class Cards extends Model {}
   Cards.init(
     {
-      cardName: {
-        type: DataTypes.STRING
-      },
-      cardID: {
-        type: DataTypes.STRING
-      }
-
+      name: DataTypes.STRING,
+      img: DataTypes.STRING,
+      value: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: 'Cards',
       tableName: 'cards',
+      timestamps: false, 
     }
   );
 

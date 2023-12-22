@@ -29,6 +29,9 @@ class Match extends Model {}
       winner: {
         type: DataTypes.STRING,
       },
+      mainCard: {
+        type: DataTypes.STRING,
+      }
     },
     {
       sequelize,

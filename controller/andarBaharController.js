@@ -3,6 +3,7 @@ const { Op } = sequelize;
 const andarBaharMatch = require("../models/andarBaharMatch")
 const Player = require('../models/player');
 const Bets = require('../models/currentMatchBets');
+const Cards = require('../models/cards');
 
 let andarBettemp = 0;
 let baharBettemp = 0;
@@ -26,6 +27,10 @@ const createNewMatch = async (req, res) => {
         if (nextMatchTime <= new Date()) {
           const createdMatch = await andarBaharMatch.create();
           currentMatchId = createdMatch.id;
+          const randCard = await getRandomcard();
+          console.log(randCard);
+          await andarBaharMatch.update({ mainCard: randCard },
+          { where: { id: currentMatchId } });
           await Bets.destroy({
             where: {}, // Empty object means no specific condition, so it matches all rows
             truncate: true // Truncate ensures resetting auto-increment IDs (if any)
@@ -39,6 +44,10 @@ const createNewMatch = async (req, res) => {
         // No existing match, create a new one
         const createdMatch = await andarBaharMatch.create();
         currentMatchId = createdMatch.id;
+        const randCard = await getRandomcard();
+        console.log(randCard);
+        await andarBaharMatch.update({ mainCard: randCard },
+        { where: { id: currentMatchId } });
         await Bets.destroy({
           where: {}, // Empty object means no specific condition, so it matches all rows
           truncate: true // Truncate ensures resetting auto-increment IDs (if any)
@@ -69,8 +78,25 @@ const matchStatus = async (req, res) => {
  console.log("array of players in current match",lastMatch.playerIds)
  return res.status(200).json({
   currentMatchId: lastMatch.id,
-  players: lastMatch.playerIds
+  players: lastMatch.playerIds,
+  mainCard: lastMatch.mainCard
 });
+};
+
+// function to generate random card 
+
+const getRandomcard = async () => {
+  try {
+    const randomCard = await Cards.findOne({
+      attributes: ['img'], // Select the 'img' column
+      order: sequelize.literal('RAND()'), // Order by random
+    });
+
+    return randomCard.img; // Return the image URL
+  } catch (error) {
+    console.error('Error fetching random card:', error);
+    throw error;
+  }
 };
 
 
