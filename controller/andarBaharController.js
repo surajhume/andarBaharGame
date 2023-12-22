@@ -161,6 +161,15 @@ const placeBet = async (req, res) => {
 
 }
 
+const playerBalance = async (req, res) => {
+  const { playerId } = req.body;
+  const playerBal = await Player.findOne({
+    attributes: ['playerBalance'],
+  where: { id: playerId }
+  });
+  return res.status(200).json({
+    playerBal: playerBal.playerBalance ,
+  });
+}
 
-
-module.exports = { createNewMatch, matchStatus, placeBet };
+module.exports = { createNewMatch, matchStatus, placeBet, playerBalance };
