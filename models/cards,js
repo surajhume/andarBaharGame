@@ -1,0 +1,24 @@
+'use strict';
+const { DataTypes, Model } = require('sequelize');
+const sequelize = require("./index")
+
+  class Cards extends Model {}
+  Cards.init(
+    {
+      cardName: {
+        type: DataTypes.STRING
+      },
+      cardID: {
+        type: DataTypes.STRING
+      }
+
+    },
+    {
+      sequelize,
+      modelName: 'Cards',
+      tableName: 'cards',
+    }
+  );
+
+  module.exports = Cards;
+
