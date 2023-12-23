@@ -284,7 +284,7 @@ const getMatchCards = async (req, res) => {
   }
 
  return res.status(200).json({
-    winnerIds: calcWinnerBalanc,
+    genRandomCards: genRandomCards
   });
 
 
